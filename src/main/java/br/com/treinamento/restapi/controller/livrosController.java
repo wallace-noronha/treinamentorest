@@ -1,15 +1,11 @@
 package br.com.treinamento.restapi.controller;
 
 import br.com.treinamento.restapi.model.Livro;
-import br.com.treinamento.restapi.repository.LivrosRepository;
 import br.com.treinamento.restapi.services.LivrosService;
-import br.com.treinamento.restapi.services.exception.LivroNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -39,32 +35,20 @@ public class livrosController {
     @GetMapping("/{id}")
     public ResponseEntity<?> buscar(@PathVariable("id") Long id){
         Livro livro;
-        try {
-            livro = livrosService.buscar(id);
-        }catch (LivroNaoEncontradoException e){
-            return ResponseEntity.notFound().build();
-        }
+        livro = livrosService.buscar(id);
         return ResponseEntity.status(HttpStatus.OK).body(livro);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
-        try{
-            livrosService.deletar(id);
-        } catch (LivroNaoEncontradoException e){
-            return ResponseEntity.notFound().build();
-        }
+        livrosService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizar(@RequestBody Livro livro, @PathVariable("id") Long id){
         livro.setId(id);
-        try {
-            livrosService.atualizar(livro);
-        } catch (LivroNaoEncontradoException e){
-            return ResponseEntity.notFound().build();
-        }
+        livrosService.atualizar(livro);
         return ResponseEntity.noContent().build();
     }
 
