@@ -34,4 +34,10 @@ public class livrosController {
         livrosRepository.deleteById(id);
     }
 
+    @PutMapping("/{id}")
+    public void atualizar(@RequestBody Livro livro, @PathVariable("id") Long id){
+        livro.setId(id);
+        livrosRepository.save(livro);
+    }
+
 }
