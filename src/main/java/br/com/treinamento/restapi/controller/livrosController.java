@@ -2,6 +2,8 @@ package br.com.treinamento.restapi.controller;
 
 import br.com.treinamento.restapi.model.Livro;
 import br.com.treinamento.restapi.repository.LivrosRepository;
+import br.com.treinamento.restapi.services.LivrosService;
+import br.com.treinamento.restapi.services.exception.LivroNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,16 +20,16 @@ import java.util.List;
 public class livrosController {
 
     @Autowired
-    private LivrosRepository livrosRepository;
+    private LivrosService livrosService;
 
     @GetMapping()
     public ResponseEntity<List<Livro>> listar(){
-        return ResponseEntity.status(HttpStatus.OK).body(livrosRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(livrosService.listar());
     }
 
     @PostMapping()
     public ResponseEntity<Void> salvar(@RequestBody Livro livro){
-        livro = livrosRepository.save(livro);
+        livro = livrosService.salvar(livro);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build(livro.getId());
 
@@ -36,22 +38,21 @@ public class livrosController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscar(@PathVariable("id") Long id){
-        Livro livro = livrosRepository.findById(id).orElse(new Livro());
-
-        if (livro.getNome() == null){
+        Livro livro;
+        try {
+            livro = livrosService.buscar(id);
+        }catch (LivroNaoEncontradoException e){
             return ResponseEntity.notFound().build();
         }
-
         return ResponseEntity.status(HttpStatus.OK).body(livro);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
-
         try{
-            livrosRepository.deleteById(id);
-        }catch (EmptyResultDataAccessException e){
-           return ResponseEntity.notFound().build();
+            livrosService.deletar(id);
+        } catch (LivroNaoEncontradoException e){
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();
     }
@@ -59,7 +60,11 @@ public class livrosController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizar(@RequestBody Livro livro, @PathVariable("id") Long id){
         livro.setId(id);
-        livrosRepository.save(livro);
+        try {
+            livrosService.atualizar(livro);
+        } catch (LivroNaoEncontradoException e){
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.noContent().build();
     }
 
