@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/livros")
-public class livrosController {
+public class LivrosController {
 
     @Autowired
     private LivrosService livrosService;

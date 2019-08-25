@@ -1,6 +1,8 @@
 package br.com.treinamento.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.hibernate.mapping.Join;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -30,7 +32,10 @@ public class Livro {
     private List<Comentario> comentarios;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String autor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "AUTOR_ID")
+    @JsonIgnore
+    private Autor autor;
 
     public Long getId() {
         return id;
@@ -80,11 +85,11 @@ public class Livro {
         this.comentarios = comentarios;
     }
 
-    public String getAutor() {
+    public Autor getAutor() {
         return autor;
     }
 
-    public void setAutor(String autor) {
+    public void setAutor(Autor autor) {
         this.autor = autor;
     }
 }
