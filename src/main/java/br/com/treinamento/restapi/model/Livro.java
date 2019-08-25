@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
 @Entity
 public class Livro {
 
@@ -30,10 +31,6 @@ public class Livro {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String autor;
-
-    public Livro(String nome) {
-        this.nome = nome;
-    }
 
     public Long getId() {
         return id;
