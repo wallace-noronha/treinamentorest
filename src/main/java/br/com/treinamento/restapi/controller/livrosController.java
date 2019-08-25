@@ -24,4 +24,9 @@ public class livrosController {
         livrosRepository.save(livro);
     }
 
+    @GetMapping("/{id}")
+    public Livro buscar(@PathVariable("id") Long id){
+        return livrosRepository.findById(id).orElse(new Livro());
+    }
+
 }
