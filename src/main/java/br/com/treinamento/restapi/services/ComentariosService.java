@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ComentariosService {
@@ -23,6 +24,10 @@ public class ComentariosService {
         comentario.setData(new Date());
 
         return comentariosRepository.save(comentario);
+    }
+
+    public List<Comentario> listarComentario(Long livroId){
+        return livrosService.buscar(livroId).getComentarios();
     }
 
 

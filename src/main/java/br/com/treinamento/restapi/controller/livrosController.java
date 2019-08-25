@@ -58,11 +58,17 @@ public class livrosController {
     }
 
     @PostMapping("/{id}/comentarios")
-    public ResponseEntity<Void> adicionarComentario(@PathVariable Long id,@RequestBody Comentario comentario){
+    public ResponseEntity<Void> adicionarComentario(@PathVariable("id") Long id,@RequestBody Comentario comentario){
         comentariosService.salvar(id, comentario);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping("/{id}/comentarios")
+    public ResponseEntity<List<Comentario>> listarComentarios(@PathVariable("id") Long livroId){
+        List<Comentario> comentarioLivro = comentariosService.listarComentario(livroId);
+        return ResponseEntity.status(HttpStatus.OK).body(comentarioLivro);
     }
 
 }
