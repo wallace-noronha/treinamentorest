@@ -2,22 +2,32 @@ package br.com.treinamento.restapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
+@Entity
 public class Livro {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nome;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date publicacao;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String editora;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String resumo;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Transient
     private List<Comentarios> comentarios;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String autor;
 
