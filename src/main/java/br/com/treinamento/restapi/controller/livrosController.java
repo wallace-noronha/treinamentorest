@@ -1,6 +1,8 @@
 package br.com.treinamento.restapi.controller;
 
+import br.com.treinamento.restapi.model.Comentario;
 import br.com.treinamento.restapi.model.Livro;
+import br.com.treinamento.restapi.services.ComentariosService;
 import br.com.treinamento.restapi.services.LivrosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,9 @@ public class livrosController {
 
     @Autowired
     private LivrosService livrosService;
+
+    @Autowired
+    private ComentariosService comentariosService;
 
     @GetMapping()
     public ResponseEntity<List<Livro>> listar(){
@@ -50,6 +55,14 @@ public class livrosController {
         livro.setId(id);
         livrosService.atualizar(livro);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/comentarios")
+    public ResponseEntity<Void> adicionarComentario(@PathVariable Long id,@RequestBody Comentario comentario){
+        comentariosService.salvar(id, comentario);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 
 }
