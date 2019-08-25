@@ -29,4 +29,9 @@ public class livrosController {
         return livrosRepository.findById(id).orElse(new Livro());
     }
 
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable("id") Long id) {
+        livrosRepository.deleteById(id);
+    }
+
 }
