@@ -4,6 +4,7 @@ import br.com.treinamento.restapi.model.Autor;
 import br.com.treinamento.restapi.services.AutoresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,7 +20,7 @@ public class AutorController {
     @Autowired
     private AutoresService autoresService;
 
-    @GetMapping
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
     private ResponseEntity<List<Autor>> listar(){
         return ResponseEntity.status(HttpStatus.OK).body(autoresService.listar());
     }
