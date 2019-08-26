@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -15,16 +18,21 @@ public class Livro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Nome é obrigatório")
     private String nome;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonFormat(pattern = "dd/MM/yyyy")
+    @NotNull(message = "Publicação é obrigatório")
     private Date publicacao;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotNull(message = "Editora é obrigatório")
     private String editora;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotEmpty(message = "Resumo é obrigatório")
+    @Size(max = 1500, message = "Resumo não pode conter mais de 1500 caractéres.")
     private String resumo;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

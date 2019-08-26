@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class LivrosController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> salvar(@RequestBody Livro livro){
+    public ResponseEntity<Void> salvar(@Valid @RequestBody Livro livro){
         livro = livrosService.salvar(livro);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build(livro.getId());
@@ -58,7 +59,7 @@ public class LivrosController {
     }
 
     @PostMapping("/{id}/comentarios")
-    public ResponseEntity<Void> adicionarComentario(@PathVariable("id") Long id,@RequestBody Comentario comentario){
+    public ResponseEntity<Void> adicionarComentario(@Valid @PathVariable("id") Long id,@RequestBody Comentario comentario){
         comentariosService.salvar(id, comentario);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 
