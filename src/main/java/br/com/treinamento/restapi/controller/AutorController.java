@@ -5,10 +5,10 @@ import br.com.treinamento.restapi.services.AutoresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,6 +21,19 @@ public class AutorController {
     @GetMapping
     private ResponseEntity<List<Autor>> listar(){
         return ResponseEntity.status(HttpStatus.OK).body(autoresService.listar());
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> salvar(@RequestBody Autor autor){
+        autoresService.salvar(autor);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(autor.getId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Autor> buscar(@PathVariable("id") Long id){
+        Autor autor = autoresService.buscar(id);
+        return ResponseEntity.status(HttpStatus.OK).body(autor);
     }
 
 }

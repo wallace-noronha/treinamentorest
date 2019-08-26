@@ -1,6 +1,8 @@
 package br.com.treinamento.restapi.handler;
 
 import br.com.treinamento.restapi.model.DetalhesErro;
+import br.com.treinamento.restapi.services.exception.AutorExistenteException;
+import br.com.treinamento.restapi.services.exception.AutorNaoEncontradoException;
 import br.com.treinamento.restapi.services.exception.LivroNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,4 +27,29 @@ public class ControllerExceptionHandler {
 
     }
 
+    @ExceptionHandler(AutorExistenteException.class)
+    public ResponseEntity<DetalhesErro> handlerAutorExistenteException(AutorExistenteException e, HttpServletRequest request){
+
+        DetalhesErro erro = new DetalhesErro();
+        erro.setStatus(409l);
+        erro.setTitulo("O autor já existente");
+        erro.setMensagemDesenvolvedor("http://erros.socialbooks.com/409");
+        erro.setTimestamp(System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(erro);
+
+    }
+
+    @ExceptionHandler(AutorNaoEncontradoException.class)
+    public ResponseEntity<DetalhesErro> handlerAutorNaoEncontradoException(AutorNaoEncontradoException e, HttpServletRequest request){
+
+        DetalhesErro erro = new DetalhesErro();
+        erro.setStatus(404l);
+        erro.setTitulo("O autor não encontrado");
+        erro.setMensagemDesenvolvedor("http://erros.socialbooks.com/404");
+        erro.setTimestamp(System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+
+    }
 }
