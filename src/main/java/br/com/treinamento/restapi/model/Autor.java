@@ -1,5 +1,9 @@
 package br.com.treinamento.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -13,11 +17,14 @@ public class Autor {
 
     private String nome;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date nascimento;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String nacionalidade;
 
     @OneToMany(mappedBy = "autor")
+    @JsonIgnore
     private List<Livro> livros;
 
     public Long getId() {

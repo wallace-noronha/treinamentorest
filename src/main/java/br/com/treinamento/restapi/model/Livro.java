@@ -1,8 +1,7 @@
 package br.com.treinamento.restapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.hibernate.mapping.Join;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,6 +18,7 @@ public class Livro {
     private String nome;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date publicacao;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,14 +27,13 @@ public class Livro {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String resumo;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @OneToMany(mappedBy = "livro")
     private List<Comentario> comentarios;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "AUTOR_ID")
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Autor autor;
 
     public Long getId() {

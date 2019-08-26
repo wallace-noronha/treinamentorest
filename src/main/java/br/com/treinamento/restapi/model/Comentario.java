@@ -1,6 +1,8 @@
 package br.com.treinamento.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,8 +16,10 @@ public class Comentario {
 
     private String texto;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String usuario;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date data;
 
     @ManyToOne(fetch = FetchType.LAZY)
